@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<title>BitMesh</title>
+	<link rel="stylesheet" href="index.css" />
+	<script src="http://s.factorymart1.com/btcexg/global-cdn/react.production.min.js"></script>
+	<script src="http://s.factorymart1.com/btcexg/global-cdn/react-dom.production.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://unpkg.com/prettier@1.13.0/standalone.js"></script>
+	<script src="https://unpkg.com/prettier@1.13.0/parser-graphql.js"></script>
+
+  <style>
+    body {
+      padding: 50px;
+    }
+
+		button {
+			display: inline-block;
+			height: 30px;
+			line-height: 30px;
+		}
+
+    .bitmesh_payment_button {
+      height: 30px;
+      display: inline-block;
+      line-height: 30px;
+      border: 1px solid #ccc;
+      position:relative;
+    }
+
+    .bitmesh_loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .bitmesh_payment_modal {
+      position: relative;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 0;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      pointer-events: auto;
+    }
+
+    .bitmesh_payment_modal_header {
+      padding: 5px 10px;
+      color: rgba(0,0,0,0.65);
+      background: #fff;
+      border-bottom: 1px solid #e8e8e8;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .bitmesh_payment_modal_header h2 {
+      margin: 0;
+      padding: 0;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .bitmesh_payment_modal button {
+      color: #fff;
+      background-color: #1890ff;
+      border-color: #1890ff;
+      text-shadow: 0 -1px 0 rgba(0,0,0,0.12);
+      -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+      cursor: pointer;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      font-size: 16px;
+    }
+
+    .bitmesh_payment_modal button:focus {
+      outline: 0 none;
+    }
+
+    .bitmesh_payment_modal_footer {
+      padding: 15px;
+    }
+
+		.ant-popover{
+			-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0;color:rgba(0,0,0,0.65);font-size:14px;font-variant:tabular-nums;line-height:1.5;list-style:none;-webkit-font-feature-settings:'tnum';font-feature-settings:'tnum';position:absolute;top:0;left:0;z-index:1030;font-weight:normal;white-space:normal;text-align:left;cursor:auto;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text
+		}
+
+		.ant-popover::after{
+			position:absolute;background:rgba(255,255,255,0.01);content:''
+		}
+
+  </style>
+</head>
+
+<body>
+	<div id="root"></div>
+  <script type="text/javascript" src="app.index.js" data-app="1"></script>
+
+	<button id="pay_paymail">Pay to paymail</button>
+  <hr />
+	<br />
+	<button id="pay_address">Pay to address</button>
+
+	<hr />
+	<br />
+	<button id="pay_script">Pay to script</button>
+
+	<hr />
+	<br />
+	<button id="pay_opreturn">Payment with opreturn data</button>
+
+	<hr />
+	<br />
+	<button id="pay_script_error">Error</button>
+
+	<hr />
+	<br />
+
+	<button id="pay_address_low_balance">Pay to address(Low balance)</button>
+
+  <br />
+  <p class="confirm_content">内容二：《波纹集》由日本艺术家 Mori Yuzan（森雄山） 绘制，该作品分上中下三部，作品为单色线稿记录了风格繁多的海河波纹图案。</p>
+  <button class="popup_confirm">气泡弹框一</button>
+  <button class="popup_confirm">气泡弹框二</button>
+  <hr />
+  <br />
+  <p class="content">内容三：不了解基督教，就不可能真正理解西方文明  </p>
+  <button id="reward">滑动支付</button>
+  <hr />
+  <br />
+  <button id="metanode">创建metanet节点</button>
+
+	<input type="file" />
+
+  <script>
+
+
+		BitMesh.config({
+			locale: 'en',
+		});
+
+    $('#pay_paymail').click(() => {
+			BitMesh.createSimplePayment({
+				to: 'tj@bitmesh.com',
+				amount: '0.01',
+				currency: 'USD',
+			},{
+        width: 400,
+				callback: function(res) {
+					console.log(res);
+				}
+      });
+		});
+
+		$('#pay_address').click(() => {
+			BitMesh.createSimplePayment({
+				to: '141ZNh1idCiSj6QkB6FqLKtiU9tsDjmEjt',
+				amount: '0.01',
+				currency: 'BSV',
+			},{
+        width: 400,
+				callback: function(res) {
+					console.log(res);
+				}
+      });
+		});
+
+
+		$('#pay_script').click(() => {
+			BitMesh.createSimplePayment({
+				to: 'OP_DUP OP_HASH160 210366dab8826b93f960a933df68c311c16654de OP_EQUALVERIFY OP_CHECKSIG',
+				amount: '0.001',
+				currency: 'BSV',
+			},{
+        width: 400,
+				callback: function(res) {
+					console.log(res);
+				}
+      });
+		});
+
+		$('#pay_opreturn').click(() => {
+			BitMesh.createSimplePayment({
+				data: 'op_return test data',
+				amount: '0',
+				currency: 'BSV',
+				sign: true,
+			},{
+        width: 400,
+				callback: function(res) {
+					console.log(res);
+				}
+      });
+		});
+
+		$('#pay_script_error').click(() => {
+			BitMesh.createSimplePayment({
+				to: 'HH dsad jdkjkd',
+				amount: '0',
+				currency: 'BSV',
+			},{
+        width: 400,
+				callback: function(res) {
+					console.log(res);
+				}
+      });
+		});
+
+
+		$('#pay_address_low_balance').click(() => {
+			BitMesh.createSimplePayment({
+				to: '16GVg34S8uwAbgeADYZEiqiqZga8nt5m67',
+				amount: '100',
+				currency: 'BSV',
+			},{
+        width: 400,
+				callback: function(res) {
+					console.log(res);
+				}
+      });
+		});
+
+    $('.popup_confirm').click(function(e) {
+      // debugger;
+      BitMesh.createSimplePayment({
+				to: '16GMXgAnJgo7pdw27WBQY8VfmTAVcMtqwY',
+				satoshis: 1e5,
+			}, {
+				trigger: e.target,
+				mode: 'popup',
+			});
+    });
+
+    $('#reward').on('click', () => {
+      BitMesh.createSimplePayment({
+				to: '2007@moneybutton.com',
+				amount: '0.02',
+				currency: 'USD',
+			},
+        {
+          mode: 'slide'
+        }
+      );
+    });
+
+		$('#metanode').click(() => {
+			BitMesh.createMetaNode({
+        data: `My metanet node ${new Date().toString()}`,
+				parentTx: 'a64c12832692f29b5c41243365d891ebd30207133817374105a0b34f691fc07f',
+				refund: true,
+      }, {
+				callback: function(res, widget) {
+					console.log(res);
+					widget.close();
+				}
+			});
+		});
+
+		BitMesh.isLogin().then(console.log);
+
+		BitMesh.getUserInfo().then(console.log);
+  </script>
+</body>
+</html>
